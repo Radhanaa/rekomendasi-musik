@@ -36,11 +36,11 @@ def navigate_to(page_name):
 def load_assets():
     try:
         # Pastikan file ada sebelum load
-        if not os.path.exists('final_model.h5'):
-            st.error("File 'final_model.h5' tidak ditemukan.")
+        if not os.path.exists('final_model_lite.h5'):
+            st.error("File 'final_model_lite.h5' tidak ditemukan.")
             return None, None
         
-        model = load_model('final_model.h5')
+        model = load_model('final_model_lite.h5')
         
         # Cek path haarcascade (biasanya perlu path absolut atau dari library cv2)
         cascade_path = 'haarcascade_frontalface_default.xml'
@@ -355,4 +355,5 @@ elif st.session_state['page'] == 'feedback':
                         
                         st.balloons()
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
+
                         st.rerun()
