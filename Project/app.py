@@ -47,7 +47,7 @@ def load_assets():
             st.error(f"File tidak ditemukan: {model_path}")
             return None, None
             
-        model = load_model(model_path)
+        model = load_model(model_path, compile=False)
         
         # Load Cascade (Cek file lokal dulu, kalau ga ada pakai bawaan cv2)
         if os.path.exists(cascade_path):
@@ -373,6 +373,7 @@ elif st.session_state['page'] == 'feedback':
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
 
                         st.rerun()
+
 
 
 
