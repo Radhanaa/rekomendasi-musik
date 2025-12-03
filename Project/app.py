@@ -34,21 +34,29 @@ def navigate_to(page_name):
 # ======================================================================================
 @st.cache_resource
 def load_assets():
+    """Memuat model dan cascade dengan jalur absolut."""
     try:
-        # Pastikan file ada sebelum load
-        if not os.path.exists('final_model.h5'):
-            st.error("File 'final_model.h5' tidak ditemukan.")
-            return None, None
+        # 1. Dapatkan lokasi folder tempat file app.py ini berada (folder 'Project')
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         
-        model = load_model('final_model.h5')
+        # 2. Gabungkan lokasi folder tersebut dengan nama file
+        model_path = os.path.join(base_dir, 'final_model.h5')
+        cascade_path = os.path.join(base_dir, 'haarcascade_frontalface_default.xml')
+
+        # Debugging (Opsional: akan muncul di layar jika error)
+        # st.write(f"Mencari model di: {model_path}")
+
+        # 3. Load Model
+        model = load_model(model_path)
         
-        # Cek path haarcascade (biasanya perlu path absolut atau dari library cv2)
-        cascade_path = 'haarcascade_frontalface_default.xml'
-        if not os.path.exists(cascade_path):
-            # Fallback jika file xml tidak di folder lokal, gunakan bawaan cv2
-            cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        # 4. Load Cascade
+        # Cek apakah file cascade ada di folder Project?
+        if os.path.exists(cascade_path):
+            face_cascade = cv2.CascadeClassifier(cascade_path)
+        else:
+            # Jika tidak ada, gunakan bawaan library cv2
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
             
-        face_cascade = cv2.CascadeClassifier(cascade_path)
         return model, face_cascade
     except Exception as e:
         st.error(f"Error saat memuat aset: {e}")
@@ -56,11 +64,23 @@ def load_assets():
 
 @st.cache_data
 def load_music_data():
+    """Memuat dataset musik dengan jalur absolut."""
     try:
-        df = pd.read_excel('data_moods3.xlsx')
+        # Dapatkan lokasi folder 'Project'
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Gabungkan dengan nama file Excel
+        excel_path = os.path.join(base_dir, 'data_moods3.xlsx')
+        
+        # Cek keberadaan file
+        if not os.path.exists(excel_path):
+            st.error(f"File Excel tidak ditemukan di: {excel_path}")
+            return pd.DataFrame()
+            
+        df = pd.read_excel(excel_path)
         return df
-    except FileNotFoundError:
-        st.error("File 'data_moods3.xlsx' tidak ditemukan.")
+    except Exception as e:
+        st.error(f"Error membaca Excel: {e}")
         return pd.DataFrame()
 
 # Inisialisasi Aset
@@ -357,6 +377,7 @@ elif st.session_state['page'] == 'feedback':
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
 
                         st.rerun()
+
 
 
 
