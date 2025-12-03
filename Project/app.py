@@ -40,7 +40,7 @@ def load_assets():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         
         # 2. Gabungkan lokasi folder tersebut dengan nama file
-        model_path = os.path.join(base_dir, 'final_model.h5')
+        model_path = os.path.join(base_dir, 'final_model_lite.h5')
         cascade_path = os.path.join(base_dir, 'haarcascade_frontalface_default.xml')
 
         # Debugging (Opsional: akan muncul di layar jika error)
@@ -70,7 +70,7 @@ def load_music_data():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         
         # Gabungkan dengan nama file Excel
-        excel_path = os.path.join(base_dir, 'data_moods3.xlsx')
+        excel_path = os.path.join(base_dir, 'data_moods.xlsx')
         
         # Cek keberadaan file
         if not os.path.exists(excel_path):
@@ -377,6 +377,7 @@ elif st.session_state['page'] == 'feedback':
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
 
                         st.rerun()
+
 
 
 
