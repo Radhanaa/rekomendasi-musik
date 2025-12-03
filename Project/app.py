@@ -57,10 +57,10 @@ def load_assets():
 @st.cache_data
 def load_music_data():
     try:
-        df = pd.read_excel('data_moods3.xlsx')
+        df = pd.read_excel('data_moods.xlsx')
         return df
     except FileNotFoundError:
-        st.error("File 'data_moods3.xlsx' tidak ditemukan.")
+        st.error("File 'data_moods.xlsx' tidak ditemukan.")
         return pd.DataFrame()
 
 # Inisialisasi Aset
@@ -357,3 +357,4 @@ elif st.session_state['page'] == 'feedback':
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
 
                         st.rerun()
+
