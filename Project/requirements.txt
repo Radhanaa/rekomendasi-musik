@@ -2,8 +2,9 @@ streamlit
 pandas
 numpy
 opencv-python-headless
-tensorflow-cpu
+tensorflow-cpu==2.15.0
 openpyxl
 gspread
 oauth2client
 protobuf
+
