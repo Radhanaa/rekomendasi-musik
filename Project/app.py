@@ -35,20 +35,28 @@ def navigate_to(page_name):
 @st.cache_resource
 def load_assets():
     try:
-        # Pastikan file ada sebelum load
-        if not os.path.exists('final_model.h5'):
-            st.error("File 'final_model.h5' tidak ditemukan.")
+        # Dapatkan lokasi absolut folder tempat app.py berada
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Gabungkan folder tersebut dengan nama file
+        model_path = os.path.join(base_dir, 'final_model_lite.h5')
+        cascade_path = os.path.join(base_dir, 'haarcascade_frontalface_default.xml')
+
+        # Load Model
+        if not os.path.exists(model_path):
+            st.error(f"File tidak ditemukan: {model_path}")
             return None, None
-        
-        model = load_model('final_model.h5')
-        
-        # Cek path haarcascade (biasanya perlu path absolut atau dari library cv2)
-        cascade_path = 'haarcascade_frontalface_default.xml'
-        if not os.path.exists(cascade_path):
-            # Fallback jika file xml tidak di folder lokal, gunakan bawaan cv2
-            cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
             
-        face_cascade = cv2.CascadeClassifier(cascade_path)
+        model = load_model(model_path)
+        
+        # Load Cascade (Cek file lokal dulu, kalau ga ada pakai bawaan cv2)
+        if os.path.exists(cascade_path):
+            face_cascade = cv2.CascadeClassifier(cascade_path)
+        else:
+            # Fallback ke library bawaan jika file xml tidak terupload
+            st.warning("Menggunakan haarcascade bawaan library (file xml lokal tidak ditemukan).")
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+            
         return model, face_cascade
     except Exception as e:
         st.error(f"Error saat memuat aset: {e}")
@@ -57,10 +65,18 @@ def load_assets():
 @st.cache_data
 def load_music_data():
     try:
-        df = pd.read_excel('data_moods.xlsx')
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        # PASTIKAN NAMA FILE SAMA PERSIS DENGAN YANG DI GITHUB (data_moods.xlsx atau data_moods3.xlsx?)
+        excel_path = os.path.join(base_dir, 'data_moods3.xlsx') 
+        
+        if not os.path.exists(excel_path):
+            st.error(f"File excel tidak ditemukan di: {excel_path}")
+            return pd.DataFrame()
+            
+        df = pd.read_excel(excel_path)
         return df
-    except FileNotFoundError:
-        st.error("File 'data_moods.xlsx' tidak ditemukan.")
+    except Exception as e:
+        st.error(f"Gagal membaca data musik: {e}")
         return pd.DataFrame()
 
 # Inisialisasi Aset
@@ -355,4 +371,5 @@ elif st.session_state['page'] == 'feedback':
                         
                         st.balloons()
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
+
                         st.rerun()
