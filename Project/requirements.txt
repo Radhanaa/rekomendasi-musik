@@ -1,9 +1,9 @@
-streamlit==1.51.0
+streamlit
 pandas
-numpy==1.23.5
+numpy
 opencv-python-headless
-tensorflow-cpu==2.10.0
+tensorflow-cpu
 openpyxl
 gspread
 oauth2client
-protobuf==3.20.3
+protobuf
