@@ -39,7 +39,7 @@ def load_assets():
         base_dir = os.path.dirname(os.path.abspath(__file__))
         
         # Gabungkan folder tersebut dengan nama file
-        model_path = os.path.join(base_dir, 'final_model_lite.h5')
+        model_path = os.path.join(base_dir, 'final_model.h5')
         cascade_path = os.path.join(base_dir, 'haarcascade_frontalface_default.xml')
 
         # Load Model
@@ -67,7 +67,7 @@ def load_music_data():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
         # PASTIKAN NAMA FILE SAMA PERSIS DENGAN YANG DI GITHUB (data_moods.xlsx atau data_moods3.xlsx?)
-        excel_path = os.path.join(base_dir, 'data_moods3.xlsx') 
+        excel_path = os.path.join(base_dir, 'data_moods.xlsx') 
         
         if not os.path.exists(excel_path):
             st.error(f"File excel tidak ditemukan di: {excel_path}")
@@ -373,3 +373,4 @@ elif st.session_state['page'] == 'feedback':
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
 
                         st.rerun()
+
