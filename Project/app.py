@@ -36,11 +36,11 @@ def navigate_to(page_name):
 def load_assets():
     try:
         # Pastikan file ada sebelum load
-        if not os.path.exists('final_model_lite.h5'):
-            st.error("File 'final_model_lite.h5' tidak ditemukan.")
+        if not os.path.exists('final_model.h5'):
+            st.error("File 'final_model.h5' tidak ditemukan.")
             return None, None
         
-        model = load_model('final_model_lite.h5')
+        model = load_model('final_model.h5')
         
         # Cek path haarcascade (biasanya perlu path absolut atau dari library cv2)
         cascade_path = 'haarcascade_frontalface_default.xml'
@@ -57,10 +57,10 @@ def load_assets():
 @st.cache_data
 def load_music_data():
     try:
-        df = pd.read_excel('data_moods.xlsx')
+        df = pd.read_excel('data_moods3.xlsx')
         return df
     except FileNotFoundError:
-        st.error("File 'data_moods.xlsx' tidak ditemukan.")
+        st.error("File 'data_moods3.xlsx' tidak ditemukan.")
         return pd.DataFrame()
 
 # Inisialisasi Aset
@@ -357,4 +357,5 @@ elif st.session_state['page'] == 'feedback':
                         # Rerun agar tampilan langsung berubah ke pesan "Terima Kasih"
 
                         st.rerun()
+
 
